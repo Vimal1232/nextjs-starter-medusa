@@ -19,6 +19,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    domains: ["0.0.0.0"],
     remotePatterns: [
       {
         protocol: "http",
@@ -36,7 +37,35 @@ const nextConfig = {
         protocol: "https",
         hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
       },
+      {
+        protocol: "http",
+        hostname: "0.0.0.0",
+        port: "8055",
+        pathname: "/assets/**",
+        search: "**",
+      },
     ],
+  },
+  headers: async () => {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store, must-revalidate",
+          },
+          {
+            key: "Pragma",
+            value: "no-cache",
+          },
+          {
+            key: "Expires",
+            value: "0",
+          },
+        ],
+      },
+    ]
   },
 }
 
